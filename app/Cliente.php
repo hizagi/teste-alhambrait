@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Carbon;
 
 class Cliente extends Model
 {
@@ -16,6 +17,14 @@ class Cliente extends Model
         'telefone_fixo',
         'telefone_celular',
     ];
+
+    public function getDataNascimentoAttribute() {
+        return Carbon::create($this->attributes['data_nascimento'])->format('d/m/Y');
+    }
+
+    public function setDataNascimentoAttribute( $value ) {
+        $this->attributes['data_nascimento'] = Carbon::create($value)->format('Y-m-d');
+    }
 
     public function enderecos()
     {

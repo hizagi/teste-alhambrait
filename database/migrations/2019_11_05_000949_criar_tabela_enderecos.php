@@ -18,6 +18,8 @@ class CriarTabelaEnderecos extends Migration
             $table->string('rua');
             $table->string('numero');
             $table->string('cep');
+            $table->unsignedInteger('id_cliente');
+            $table->foreign('id_cliente')->references('id')->on('clientes')->onDelete('restrict');
             $table->unsignedInteger('id_cidade');
             $table->foreign('id_cidade')->references('id')->on('cidades')->onDelete('restrict');
             $table->unsignedInteger('id_estado');

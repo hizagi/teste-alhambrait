@@ -13,6 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('/clientes', 'ClientesController@store');
+Route::get('/estados/{id_estado}/cidades', 'CidadesController@listarPorEstado');

@@ -15,10 +15,10 @@ class CriarTabelaClientes extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedIntegecr('id_endereco')->nullable();
+            $table->unsignedInteger('id_endereco')->nullable();
             $table->foreign('id_endereco')->references('id')->on('enderecos')->onDelete('restrict');
             $table->string('nome');
-            $table->dateTime('data_nascimento');
+            $table->date('data_nascimento');
             $table->timestamp('data_cadastro')->nullable();
             $table->timestamp('data_alteracao')->nullable();
             $table->string('telefone_fixo')->nullable();

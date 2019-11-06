@@ -12,4 +12,3 @@
 */
 
 Route::get('/', 'ClientesController@create');
-Route::post('/clientes/store', 'ClientesController@store');
