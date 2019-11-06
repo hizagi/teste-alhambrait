@@ -14,4 +14,5 @@ use Illuminate\Http\Request;
 */
 
 Route::post('/clientes', 'ClientesController@store');
+Route::get('/estados', 'EstadosController@index');
 Route::get('/estados/{id_estado}/cidades', 'CidadesController@listarPorEstado');

@@ -64,7 +64,7 @@ class ClientesController extends Controller
             );
         }
 
-        $passo_atual++;
+        $passo_atual = ($passo_atual + 1) % 4;
 
         return response()->json(['dados_cadastrados' => $retorno, 'passo_atual' => $passo_atual], 200);
 

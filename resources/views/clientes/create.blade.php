@@ -7,6 +7,7 @@
 <script src="js/selectr.min.js"></script>
 <script src="js/animate_css.js"></script>
 <script src="js/vanillatoasts.min.js"></script>
+<script src="js/servico.js"></script>
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @endsection
 @section('conteudo')
@@ -102,9 +103,6 @@
                         </div>
                     </div>
                     @endif
-                    @if ($passo_atual != 1)
-                    <button class="btn btn-secondary" id="anterior">Anterior</button>
-                    @endif
                     <button class="btn btn-primary btn-direita" id="proximo">
                         @if ($passo_atual != 3)
                         Próximo
@@ -153,14 +151,15 @@
                     messages: messagem_select_traduzida
                 });
                 input_estado.on('selectr.select', function(option) {
-                    buscarCidades(option.value);
+                    if(option && option.value) {
+                        buscarCidades(option.value);
+                    }
                 });
             }
             if(document.getElementById('input_cidade')){
                 input_cidade = new Selectr(document.getElementById('input_cidade'), {
                     messages: messagem_select_traduzida
                 });
-                console.log(input_cidade);
             }
 
 
@@ -175,7 +174,6 @@
                         json_input[input.name] = input.value;
                     }
                 });
-                console.log(inputs_validos, json_input);
                 enviarDados(json_input);
             });
         }
@@ -199,7 +197,6 @@
             .then((response) => {
                 validarErros([]);
                 requisicaoFinalizada();
-                console.log('resposta', response);
                 VanillaToasts.create({
                     title: 'Dados cadastrados com sucesso!',
                     type: 'success',
@@ -226,7 +223,6 @@
                 responseType: 'json',
             })
             .then((response) => {
-                console.log('resposta', response);
                 preencher_select_cidades(response.data);
                 requisicaoFinalizada();
             }).catch((err) => {
@@ -255,7 +251,6 @@
             limparErros();
             const nomes_erros = Object.keys(erros);
             const inputs = validarInputs(document.querySelectorAll('input, select'));
-            console.log('validar erros', erros, inputs);
             inputs.forEach((input) => {
                 const contem_erro = nomes_erros.find((erro) => erro === input.name);
                 if(contem_erro) {
@@ -362,7 +357,6 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-secondary" id="anterior">Anterior</button>
                         <button class="btn btn-primary btn-direita" id="proximo">
                             Próximo
                         </button>
@@ -388,7 +382,6 @@
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-secondary" id="anterior">Anterior</button>
                         <button class="btn btn-primary btn-direita" id="proximo">
                             Finalizar
                         </button>
@@ -422,15 +415,21 @@
 
             }
 
+            if(!passo_atual) {
+                document.querySelector(`.passo_2`).classList.remove('active');
+                document.querySelector(`.passo_3`).classList.remove('active');
+            }
+
             for(let i = 1; i <= passo_atual; i++){
-                console.log(`.passo_${i}`);
                 document.querySelector(`.passo_${i}`).classList.add('active');
             }
 
             document.querySelector('form').innerHTML = passo_html;
             registrarEventos(passo_atual);
+            if(passo_atual == 2){
+                buscarEstados(input_estado);
+            }
             animateCSS('#page', 'fadeInRight');
-
         }
 
 </script>
