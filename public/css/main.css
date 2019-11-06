@@ -4,6 +4,9 @@
     margin-top: 100px;
     width: 700px;
 }
+.is-invalid {
+    border-color: #dc3545 !important;
+}
 .btn-direita{
     float: right;
 }

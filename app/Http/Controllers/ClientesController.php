@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cliente;
+use App\Endereco;
 use App\Estado;
 use Exception;
 use Illuminate\Http\Request;
@@ -48,12 +49,24 @@ class ClientesController extends Controller
             return request()->validate($this->validacaoPorPasso($passo_atual));
         }
 
-        $cliente_alterado = Cliente::updateOrCreate(
-            ['id' => $id_cliente_em_aberto],
-            $dados_validados
-        );
+        if ($passo_atual == 2) {
+            $retorno = Endereco::create([
+                'rua' => $dados_validados['rua'],
+                'numero' => $dados_validados['numero'],
+                'cep' => $dados_validados['cep'],
+                'id_cliente' => $id_cliente_em_aberto,
+                'id_cidade' => $dados_validados['cidade'],
+            ]);
+        } else {
+            $retorno = Cliente::updateOrCreate(
+                ['id' => $id_cliente_em_aberto],
+                $dados_validados
+            );
+        }
 
-        return response()->json($cliente_alterado, 200);
+        $passo_atual++;
+
+        return response()->json(['dados_cadastrados' => $retorno, 'passo_atual' => $passo_atual], 200);
 
     }
 
@@ -67,18 +80,18 @@ class ClientesController extends Controller
                 break;
             case 2:
                 return [
-                    'id_cidade' => ['required'],
-                    'id_estado' => ['required'],
+                    'cidade' => ['required','numeric'],
+                    'estado' => ['required', 'numeric'],
                     'rua' => ['required','string'],
-                    'numero' => ['required'],
+                    'numero' => ['required', 'numeric', 'min:0'],
                     'cep' => ['required','string', 'size:8'],
 
                 ];
                 break;
             case 3:
                 return [
-                    'nome' => ['required','string'],
-                    'data_nascimento' => ['required','date_format:d/m/Y'],
+                    'telefone_fixo' => ['required','string', 'min:10'],
+                    'telefone_celular' => ['required','string', 'min:11'],
                 ];
                 break;
         }

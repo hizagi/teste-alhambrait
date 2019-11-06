@@ -14,7 +14,6 @@ class Endereco extends Model
         'numero',
         'cep',
         'id_cidade',
-        'id_estado',
         'data_cadastro',
         'data_alteracao',
     ];

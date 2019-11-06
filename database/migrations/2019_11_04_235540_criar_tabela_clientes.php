@@ -15,8 +15,6 @@ class CriarTabelaClientes extends Migration
     {
         Schema::create('clientes', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->unsignedInteger('id_endereco')->nullable();
-            $table->foreign('id_endereco')->references('id')->on('enderecos')->onDelete('restrict');
             $table->string('nome');
             $table->date('data_nascimento');
             $table->timestamp('data_cadastro')->nullable();

@@ -22,8 +22,6 @@ class CriarTabelaEnderecos extends Migration
             $table->foreign('id_cliente')->references('id')->on('clientes')->onDelete('restrict');
             $table->unsignedInteger('id_cidade');
             $table->foreign('id_cidade')->references('id')->on('cidades')->onDelete('restrict');
-            $table->unsignedInteger('id_estado');
-            $table->foreign('id_estado')->references('id')->on('estados')->onDelete('restrict');
             $table->timestamp('data_cadastro')->nullable();
             $table->timestamp('data_alteracao')->nullable();
         });

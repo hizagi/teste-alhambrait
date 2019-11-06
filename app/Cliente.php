@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Carbon;
-
+use Log;
 class Cliente extends Model
 {
     const CREATED_AT = 'data_cadastro';
@@ -34,8 +34,10 @@ class Cliente extends Model
     public function cadastro_em_aberto()
     {
         $passou_primeiro_passo = $this->nome && $this->data_nascimento;
-        $passou_segundo_passo = $this->enderecos()->exists();
+        $passou_segundo_passo = $this->enderecos()->first();
         $passou_terceiro_passo = $this->telefone_fixo && $this->telefone_celular;
+
+        Log::info('passos', [$passou_primeiro_passo, $passou_segundo_passo, $passou_terceiro_passo]);
 
         $passo = 1;
 
